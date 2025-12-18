@@ -264,7 +264,7 @@ ${totalSales} transformaciones reales. ${salesYesterday} personas más empezaron
     return [
       {
         title: 'Problema/Solución (Pain Point)',
-        description: `¿Te has sentido frustrado porque [problema específico] sigue afectando tu día a día? 😔
+        description: `¿Te has sentido frustrado porque ese problema constante sigue afectando tu día a día? 😔
 
 Sabemos exactamente lo que estás pasando. Miles de personas han enfrentado este mismo problema durante años, probando soluciones que simplemente NO funcionan.
 
@@ -272,7 +272,7 @@ Pero aquí está la buena noticia... 🎯
 
 ${productName} fue diseñado específicamente para resolver este problema de raíz. No es otra solución temporal, es LA solución definitiva que has estado buscando.
 
-✅ Resuelve [problema] de forma permanente
+✅ Resuelve el problema de forma permanente
 ✅ Fácil de usar, sin complicaciones
 ✅ Resultados visibles desde el primer uso
 ✅ Garantía de satisfacción 100%
@@ -283,7 +283,7 @@ Ya son ${totalSales} clientes satisfechos que superaron este mismo problema. Aho
       },
       {
         title: 'Transformación (Antes y Después)',
-        description: `🔴 ANTES: "Estoy harto de [problema]... He probado todo y nada funciona. Me siento frustrado y sin esperanza..."
+        description: `🔴 ANTES: "Estoy harto de esta situación... He probado todo y nada funciona. Me siento frustrado y sin esperanza..."
 
 ¿Te suena familiar? Así se sentían miles de personas antes de descubrir ${productName}.
 
@@ -292,9 +292,9 @@ Ya son ${totalSales} clientes satisfechos que superaron este mismo problema. Aho
 Esta es la transformación REAL que están experimentando ${totalSales} personas en todo el mundo. No es magia, es simplemente el poder de una solución que REALMENTE funciona.
 
 📈 RESULTADOS COMPROBADOS:
-• [Resultado 1] en tiempo récord
-• [Resultado 2] garantizado
-• [Resultado 3] desde el primer día
+• Mejora notable en tiempo récord
+• Resultados duraderos garantizados
+• Cambios visibles desde el primer día
 • Satisfacción del 98% de nuestros clientes
 
 La pregunta no es SI funciona... la pregunta es: ¿Cuándo vas a empezar TÚ tu transformación?
@@ -338,8 +338,8 @@ La mayoría de productos similares solo te dan soluciones temporales, materiales
 
 🎯 ${productName} ES DIFERENTE:
 
-✨ CARACTERÍSTICA ÚNICA #1: [Detalle específico que nadie más tiene]
-Mientras otros productos hacen X, nosotros hacemos Y, lo que significa resultados 10X mejores para ti.
+✨ DISEÑO Y FUNCIONALIDAD SUPERIOR:
+Mientras otros productos ofrecen lo básico, nosotros entregamos una experiencia premium completa, lo que significa resultados 10X mejores para ti.
 
 💎 CALIDAD PREMIUM GARANTIZADA:
 No usamos materiales baratos ni procesos de baja calidad. Cada detalle está cuidadosamente diseñado para darte la mejor experiencia posible.
@@ -350,8 +350,8 @@ No es solo marketing. Tenemos estudios reales y ${totalSales} testimonios de cli
 🛡️ GARANTÍA SIN RIESGOS:
 Tan seguros estamos de que te va a encantar, que ofrecemos garantía total de satisfacción. Si no funciona, te devolvemos el 100% de tu dinero. Sin preguntas.
 
-🏆 RECONOCIMIENTO:
-[Premios, certificaciones, o validaciones externas si aplica]
+🏆 RECONOCIMIENTO Y VALIDACIÓN:
+Miles de clientes satisfechos respaldan la calidad y efectividad del producto.
 
 La diferencia entre "otro producto más" y ${productName} es la diferencia entre seguir frustrado o finalmente lograr lo que quieres.
 
@@ -359,7 +359,7 @@ La diferencia entre "otro producto más" y ${productName} es la diferencia entre
       },
       {
         title: 'Desafío/Pregunta Impactante',
-        description: `¿Y si te dijera que podrías [lograr resultado increíble] en solo [periodo de tiempo corto]? 💭
+        description: `¿Y si te dijera que podrías lograr resultados extraordinarios en tiempo récord? 💭
 
 Sé lo que estás pensando: "Suena demasiado bueno para ser verdad..."
 
@@ -374,9 +374,9 @@ ${totalSales} personas dijeron "sí" a este desafío. Y TODAS ellas lograron res
 ¿La pregunta real? ¿Eres de las personas que toma acción, o de las que solo observa cómo otros logran sus sueños?
 
 💡 PIÉNSALO ASÍ:
-• ¿Cuánto tiempo más vas a esperar para [resultado deseado]?
+• ¿Cuánto tiempo más vas a esperar para alcanzar tus objetivos?
 • ¿Cuántas oportunidades más vas a dejar pasar?
-• ¿Realmente puedes darte el lujo de seguir sin [beneficio principal]?
+• ¿Realmente puedes darte el lujo de seguir sin esta solución?
 
 ⚡ LA VERDAD INCÓMODA:
 Dentro de 6 meses estarás en uno de dos lugares:

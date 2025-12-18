@@ -13,6 +13,173 @@ interface SalesAngle {
   description: string;
 }
 
+interface GeminiAngle {
+  type: string;
+  title: string;
+  content: string;
+}
+
+interface GeminiResponse {
+  angles: GeminiAngle[];
+}
+
+const CACHE_PREFIX = 'sales_angles_';
+const CACHE_EXPIRY_HOURS = 24;
+
+function getCachedAngles(videoId: string): SalesAngle[] | null {
+  try {
+    const cached = localStorage.getItem(`${CACHE_PREFIX}${videoId}`);
+    if (!cached) return null;
+
+    const { angles, timestamp } = JSON.parse(cached);
+    const now = Date.now();
+    const expiryTime = CACHE_EXPIRY_HOURS * 60 * 60 * 1000;
+
+    if (now - timestamp > expiryTime) {
+      localStorage.removeItem(`${CACHE_PREFIX}${videoId}`);
+      return null;
+    }
+
+    return angles;
+  } catch (error) {
+    console.error('Error reading cache:', error);
+    return null;
+  }
+}
+
+function setCachedAngles(videoId: string, angles: SalesAngle[]): void {
+  try {
+    const cacheData = {
+      angles,
+      timestamp: Date.now()
+    };
+    localStorage.setItem(`${CACHE_PREFIX}${videoId}`, JSON.stringify(cacheData));
+  } catch (error) {
+    console.error('Error writing cache:', error);
+  }
+}
+
+async function callGeminiAPI(prompt: string): Promise<string> {
+  const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+  const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+
+  if (!supabaseUrl || !supabaseAnonKey) {
+    throw new Error('Supabase configuration missing');
+  }
+
+  const response = await fetch(`${supabaseUrl}/functions/v1/gemini-chat`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${supabaseAnonKey}`,
+    },
+    body: JSON.stringify({
+      systemPrompt: 'Eres un experto en copywriting y marketing digital. Generas contenido persuasivo y efectivo para ventas.',
+      message: prompt
+    })
+  });
+
+  if (!response.ok) {
+    throw new Error(`Gemini API error: ${response.status}`);
+  }
+
+  const data = await response.json();
+  return data.response;
+}
+
+async function generateAnglesWithGemini(video: VideoData): Promise<SalesAngle[] | null> {
+  try {
+    const productName = video.product_name || video.title || 'este producto';
+    const totalSales = formatNumber(video.total_sales);
+    const salesYesterday = video.sales_yesterday || 'cientos';
+    const country = video.country_origin || 'varios países';
+    const category = video.category || 'productos';
+
+    const prompt = `Genera EXACTAMENTE 5 ángulos de venta únicos y persuasivos para el siguiente producto.
+
+INFORMACIÓN DEL PRODUCTO:
+- Nombre: ${productName}
+- Categoría: ${category}
+- Total de ventas: ${totalSales} unidades
+- Ventas ayer: ${salesYesterday} unidades
+- País: ${country}
+
+REQUERIMIENTOS:
+1. Debes generar EXACTAMENTE estos 5 tipos de ángulos (uno de cada tipo):
+   - Problema-Solución: Enfócate en el problema que resuelve
+   - Beneficio Emocional: Destaca cómo mejora la vida emocional del cliente
+   - Exclusividad/Escasez: Crea urgencia por disponibilidad limitada
+   - Comparación: Compara la situación con y sin el producto
+   - Transformación: Muestra el antes y después
+
+2. Cada ángulo debe:
+   - Ser ESPECÍFICO para ${productName}
+   - Incluir las métricas reales (${totalSales}, ${salesYesterday})
+   - Usar emojis relevantes
+   - Tener entre 150-250 palabras
+   - Ser persuasivo y orientado a conversión
+   - NO usar placeholders ni corchetes
+   - Ser original y único
+
+3. Formato de respuesta (RESPONDE SOLO CON ESTE JSON, sin texto adicional):
+{
+  "angles": [
+    {
+      "type": "Problema-Solución",
+      "title": "Problema-Solución",
+      "content": "Contenido completo del ángulo aquí..."
+    },
+    {
+      "type": "Beneficio Emocional",
+      "title": "Beneficio Emocional",
+      "content": "Contenido completo del ángulo aquí..."
+    },
+    {
+      "type": "Exclusividad/Escasez",
+      "title": "Exclusividad/Escasez",
+      "content": "Contenido completo del ángulo aquí..."
+    },
+    {
+      "type": "Comparación",
+      "title": "Comparación",
+      "content": "Contenido completo del ángulo aquí..."
+    },
+    {
+      "type": "Transformación",
+      "title": "Transformación",
+      "content": "Contenido completo del ángulo aquí..."
+    }
+  ]
+}
+
+IMPORTANTE: Responde ÚNICAMENTE con el JSON, sin texto adicional antes o después.`;
+
+    const response = await callGeminiAPI(prompt);
+
+    let jsonMatch = response.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) {
+      console.error('No JSON found in Gemini response');
+      return null;
+    }
+
+    const geminiData: GeminiResponse = JSON.parse(jsonMatch[0]);
+
+    if (!geminiData.angles || geminiData.angles.length !== 5) {
+      console.error('Invalid Gemini response structure');
+      return null;
+    }
+
+    return geminiData.angles.map(angle => ({
+      title: angle.title,
+      description: angle.content
+    }));
+
+  } catch (error) {
+    console.error('Error generating angles with Gemini:', error);
+    return null;
+  }
+}
+
 // Simple hash function to generate a consistent seed from string
 function hashString(str: string): number {
   let hash = 0;
@@ -2317,17 +2484,15 @@ Las acciones hablan más que las palabras
 👉 Responde con acción. Ordena ${productName} ahora.`
 ];
 
-export function generateUniqueSalesAngles(video: VideoData): SalesAngle[] {
+function generateStaticAngles(video: VideoData): SalesAngle[] {
   const videoId = video.id;
   const productName = video.product_name || video.title || 'este producto';
   const totalSales = formatNumber(video.total_sales);
   const salesYesterday = video.sales_yesterday || 'cientos';
 
-  // Generate seed from video ID
   const seed = hashString(videoId);
   const rng = new SeededRandom(seed);
 
-  // Create a pool of all angle variations with their types
   const allAngles: Array<{type: string, generator: (pn: string, ts: string, sy: string | number) => string}> = [
     ...exclusivityVariations.map(gen => ({type: 'Exclusividad/Escasez', generator: gen})),
     ...problemSolutionVariations.map(gen => ({type: 'Problema-Solución', generator: gen})),
@@ -2336,17 +2501,35 @@ export function generateUniqueSalesAngles(video: VideoData): SalesAngle[] {
     ...transformationVariations.map(gen => ({type: 'Transformación', generator: gen}))
   ];
 
-  // Shuffle all angles using the seeded random
   const shuffledAngles = rng.shuffle(allAngles);
-
-  // Take first 5 angles (will be different for each video due to seeded shuffle)
   const selectedAngles = shuffledAngles.slice(0, 5);
 
-  // Generate the angle descriptions
   return selectedAngles.map(angle => ({
     title: angle.type,
     description: angle.generator(productName, totalSales, salesYesterday)
   }));
+}
+
+export async function generateUniqueSalesAngles(video: VideoData): Promise<SalesAngle[]> {
+  const cachedAngles = getCachedAngles(video.id);
+  if (cachedAngles) {
+    console.log('Using cached angles for video:', video.id);
+    return cachedAngles;
+  }
+
+  console.log('Generating new angles with Gemini for video:', video.id);
+  const geminiAngles = await generateAnglesWithGemini(video);
+
+  if (geminiAngles && geminiAngles.length === 5) {
+    console.log('Successfully generated angles with Gemini');
+    setCachedAngles(video.id, geminiAngles);
+    return geminiAngles;
+  }
+
+  console.log('Falling back to static angles');
+  const staticAngles = generateStaticAngles(video);
+  setCachedAngles(video.id, staticAngles);
+  return staticAngles;
 }
 
 export function generateUniqueFacebookAdCopies(video: VideoData): SalesAngle[] {

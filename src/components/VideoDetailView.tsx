@@ -25,6 +25,8 @@ export default function VideoDetailView({ video, onClose, onEdit, onDelete, dayN
   const [productCost, setProductCost] = useState<string>('0.00');
   const [adsCost, setAdsCost] = useState<string>('0.00');
   const [isEditingMetrics, setIsEditingMetrics] = useState(false);
+  const [salesAngles, setSalesAngles] = useState<Array<{title: string, description: string}>>([]);
+  const [loadingAngles, setLoadingAngles] = useState(false);
   const [editedMetrics, setEditedMetrics] = useState({
     product_name: video.product_name || '',
     country: video.country || '',
@@ -115,24 +117,37 @@ export default function VideoDetailView({ video, onClose, onEdit, onDelete, dayN
     setIsEditingMetrics(false);
   };
 
-  const getSalesAngles = () => {
-    if (Array.isArray(video.sales_angles) && video.sales_angles.length > 0) {
-      return video.sales_angles.map((angle, index) => ({
-        title: `Ángulo ${index + 1}`,
-        description: angle
-      }));
-    }
+  useEffect(() => {
+    const loadSalesAngles = async () => {
+      if (Array.isArray(video.sales_angles) && video.sales_angles.length > 0) {
+        setSalesAngles(video.sales_angles.map((angle, index) => ({
+          title: `Ángulo ${index + 1}`,
+          description: angle
+        })));
+        return;
+      }
 
-    return generateUniqueSalesAngles({
-      id: video.id,
-      product_name: video.product_name,
-      title: video.title,
-      category: video.category,
-      total_sales: video.total_sales,
-      sales_yesterday: video.sales_yesterday,
-      country_origin: video.country
-    });
-  };
+      setLoadingAngles(true);
+      try {
+        const angles = await generateUniqueSalesAngles({
+          id: video.id,
+          product_name: video.product_name,
+          title: video.title,
+          category: video.category,
+          total_sales: video.total_sales,
+          sales_yesterday: video.sales_yesterday,
+          country_origin: video.country
+        });
+        setSalesAngles(angles);
+      } catch (error) {
+        console.error('Error loading sales angles:', error);
+      } finally {
+        setLoadingAngles(false);
+      }
+    };
+
+    loadSalesAngles();
+  }, [video.id, video.sales_angles, video.product_name, video.title, video.category, video.total_sales, video.sales_yesterday, video.country]);
 
   const getFacebookAdCopies = () => {
     if (Array.isArray(video.facebook_ad_copies) && video.facebook_ad_copies.length > 0) {
@@ -527,24 +542,36 @@ export default function VideoDetailView({ video, onClose, onEdit, onDelete, dayN
             </div>
 
             <div className="p-6 space-y-4 overflow-y-auto">
-              {getSalesAngles().map((angle, index) => (
-                <div
-                  key={index}
-                  className="bg-slate-800/50 rounded-lg p-5 border border-slate-700 hover:border-emerald-500/50 transition"
-                >
-                  <h3 className="text-lg font-semibold text-emerald-400 mb-3 break-words">{angle.title}</h3>
-                  <p className="text-slate-300 leading-relaxed whitespace-pre-wrap break-words overflow-wrap-anywhere max-w-full">{angle.description}</p>
-                  <button
-                    onClick={() => {
-                      navigator.clipboard.writeText(angle.description);
-                      alert('Ángulo copiado al portapapeles');
-                    }}
-                    className="mt-3 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium rounded-lg transition"
-                  >
-                    Copiar Ángulo
-                  </button>
+              {loadingAngles ? (
+                <div className="flex flex-col items-center justify-center py-12">
+                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-500 mb-4"></div>
+                  <p className="text-slate-400 text-center">Generando ángulos de venta únicos con IA...</p>
+                  <p className="text-slate-500 text-sm mt-2">Esto puede tomar unos segundos</p>
                 </div>
-              ))}
+              ) : salesAngles.length > 0 ? (
+                salesAngles.map((angle, index) => (
+                  <div
+                    key={index}
+                    className="bg-slate-800/50 rounded-lg p-5 border border-slate-700 hover:border-emerald-500/50 transition"
+                  >
+                    <h3 className="text-lg font-semibold text-emerald-400 mb-3 break-words">{angle.title}</h3>
+                    <p className="text-slate-300 leading-relaxed whitespace-pre-wrap break-words overflow-wrap-anywhere max-w-full">{angle.description}</p>
+                    <button
+                      onClick={() => {
+                        navigator.clipboard.writeText(angle.description);
+                        alert('Ángulo copiado al portapapeles');
+                      }}
+                      className="mt-3 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium rounded-lg transition"
+                    >
+                      Copiar Ángulo
+                    </button>
+                  </div>
+                ))
+              ) : (
+                <div className="text-center py-12 text-slate-400">
+                  <p>No hay ángulos de venta disponibles</p>
+                </div>
+              )}
             </div>
 
             <div className="sticky bottom-0 bg-slate-900 border-t border-slate-700 p-6">

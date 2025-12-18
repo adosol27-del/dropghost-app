@@ -1,0 +1,101 @@
+═══════════════════════════════════════════════════════════════════════
+        GUIA PASO A PASO: CONFIGURAR STRIPE PAYMENT LINKS
+═══════════════════════════════════════════════════════════════════════
+
+ERROR QUE ESTAS VIENDO:
+"No hay URL de proveedor configurada para este producto"
+
+CAUSA:
+Los Payment Links de Stripe necesitan que configures manualmente
+la URL de retorno en el Dashboard de Stripe. Esto NO se puede hacer
+desde el codigo.
+
+═══════════════════════════════════════════════════════════════════════
+                    SOLUCION - SIGUE ESTOS PASOS
+═══════════════════════════════════════════════════════════════════════
+
+PASO 1: ABRE STRIPE DASHBOARD
+──────────────────────────────
+1. Ve a: https://dashboard.stripe.com/payment-links
+2. Inicia sesion si es necesario
+3. Asegurate de estar en el modo correcto (Test o Live)
+
+PASO 2: CONFIGURA CADA PAYMENT LINK (TIENES 3)
+───────────────────────────────────────────────
+
+Para CADA Payment Link, haz lo siguiente:
+
+A. Haz clic en el Payment Link para abrirlo
+
+B. Haz clic en el boton "Edit" (esquina superior derecha)
+
+C. Busca la seccion "After payment" o "Despues del pago"
+   (Esta cerca del final del formulario)
+
+D. En "After payment", selecciona:
+   ☐ Show a confirmation page (NO)
+   ☑ Redirect to a URL (SI - SELECCIONA ESTO)
+
+E. En el campo que aparece, pega EXACTAMENTE esta URL:
+
+   [Tu dominio]/#/auth
+
+   Ejemplos:
+   - Si tu app esta en: https://miapp.com
+     Entonces pega: https://miapp.com/#/auth
+
+   - Si tu app esta en: https://miapp.bolt.new
+     Entonces pega: https://miapp.bolt.new/#/auth
+
+   - Si estas en local: http://localhost:5173
+     Entonces pega: http://localhost:5173/#/auth
+
+F. Haz clic en "Save" o "Guardar"
+
+G. REPITE PARA LOS OTROS 2 PAYMENT LINKS
+
+═══════════════════════════════════════════════════════════════════════
+
+PASO 3: VERIFICA QUE ESTE CORRECTO
+───────────────────────────────────
+1. Vuelve a la lista de Payment Links
+2. Abre cada uno
+3. Verifica que en "After payment" diga:
+   "Redirect to [tu URL]/#/auth"
+
+═══════════════════════════════════════════════════════════════════════
+
+TUS PAYMENT LINKS:
+- Acceso Diario: https://buy.stripe.com/28E4gz4bM7c8ekt0hufjG0T
+- Oferta Especial: https://buy.stripe.com/bJebJ18s26845NX4xKfjG0S
+- Acceso Mensual: https://buy.stripe.com/bJebJ18s26845NX4xKfjG0S
+
+═══════════════════════════════════════════════════════════════════════
+
+IMPORTANTE:
+- Debes configurar LOS 3 Payment Links
+- La URL debe terminar con /#/auth
+- NO olvides hacer clic en "Save"
+- Si estas en modo Test, los pagos NO seran reales
+
+═══════════════════════════════════════════════════════════════════════
+
+SOLUCION TEMPORAL:
+Mientras configuras Stripe, los usuarios pueden:
+1. Ir directamente a Stripe y comprar
+2. Recibir un codigo de 6 digitos por email
+3. Usar el boton "Ya pague, activar suscripcion" en tu app
+4. Ingresar el codigo para activar
+
+═══════════════════════════════════════════════════════════════════════
+
+¿SIGUE SIN FUNCIONAR?
+
+Verifica:
+✓ ¿Guardaste los cambios en Stripe?
+✓ ¿Configuraste LOS 3 Payment Links?
+✓ ¿La URL termina con /#/auth?
+✓ ¿Estas en el modo correcto (Test/Live)?
+✓ ¿La URL coincide con tu dominio?
+
+═══════════════════════════════════════════════════════════════════════

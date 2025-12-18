@@ -129,27 +129,27 @@ export default function VideoDetailView({ video, onClose, onEdit, onDelete, dayN
     const angleStrategies = [
       {
         title: 'Problema-Solución',
-        description: `¿Estás frustrado porque [problema específico] te impide [objetivo deseado]? 😤
+        description: `¿Estás frustrado porque ese problema diario te impide alcanzar tus objetivos? 😤
 
 ${productName} fue diseñado específicamente para eliminar este problema de raíz. No es una solución temporal, es LA solución definitiva.
 
-✅ Resuelve [problema principal] en minutos
+✅ Resuelve el problema principal en minutos
 ✅ Sin complicaciones, fácil de usar
 ✅ Resultados garantizados desde el primer uso
 ✅ Ya son ${totalSales} clientes que superaron este problema
 
-No dejes que [problema] controle tu vida un día más. Toma acción ahora y descubre la diferencia. 💪`
+No dejes que este problema controle tu vida un día más. Toma acción ahora y descubre la diferencia. 💪`
       },
       {
         title: 'Beneficio Emocional',
-        description: `Imagina despertar cada día sintiéndote [emoción positiva: feliz, seguro, orgulloso, confiado]... 🌟
+        description: `Imagina despertar cada día sintiéndote feliz, seguro, orgulloso y confiado... 🌟
 
-${productName} no es solo un producto, es tu boleto hacia [estado emocional deseado].
+${productName} no es solo un producto, es tu boleto hacia la vida que siempre soñaste.
 
 💎 TRANSFORMA TU DÍA A DÍA:
-• Siente la tranquilidad de tener [beneficio emocional]
+• Siente la tranquilidad de tener todo bajo control
 • Disfruta la confianza que siempre quisiste
-• Experimenta la libertad de vivir sin [preocupación común]
+• Experimenta la libertad de vivir sin preocupaciones
 • Conquista ese sentimiento de logro personal
 
 ${totalSales} personas ya están viviendo esta transformación emocional. ¿Por qué tú no?
@@ -185,15 +185,15 @@ Los que dudan, pierden. Simple. 🔥`
 📊 COMPARACIÓN REAL:
 
 SIN ${productName}:
-❌ Sigues lidiando con [problema diario]
-❌ Pierdes [tiempo/dinero] constantemente
-❌ Te frustras cada vez que [situación negativa]
+❌ Sigues lidiando con las mismas frustraciones
+❌ Pierdes tiempo y dinero constantemente
+❌ Te frustras cada vez que intentas resolver el problema
 ❌ Envidias a quienes ya tienen la solución
 
 CON ${productName}:
-✅ [Beneficio específico] automáticamente
-✅ Ahorras [recurso: tiempo/dinero/esfuerzo]
-✅ Disfrutas [resultado positivo] todos los días
+✅ Obtienes resultados automáticamente
+✅ Ahorras tiempo, dinero y esfuerzo
+✅ Disfrutas resultados positivos todos los días
 ✅ Te unes a ${totalSales} usuarios satisfechos
 
 💰 INVERSIÓN vs. GASTO:
@@ -206,7 +206,7 @@ La elección es tuya. Pero ${salesYesterday} personas ayer eligieron sabiamente.
       {
         title: 'Transformación (Antes/Después)',
         description: `🔴 ANTES de ${productName}:
-"Cada día es una lucha con [problema]. He probado todo y nada funciona. Me siento estancado y sin esperanza..." 😞
+"Cada día es una lucha constante. He probado todo y nada funciona. Me siento estancado y sin esperanza..." 😞
 
 🟢 DESPUÉS de ${productName}:
 "¡WOW! No puedo creer el cambio. Mi vida es completamente diferente. ¿Por qué no lo descubrí antes?" 🤩
@@ -214,17 +214,17 @@ La elección es tuya. Pero ${salesYesterday} personas ayer eligieron sabiamente.
 📈 TRANSFORMACIÓN COMPROBADA:
 
 ✨ Primera Semana:
-• Notas mejora inmediata en [aspecto 1]
-• [Problema principal] disminuye notablemente
+• Notas mejora inmediata en tu día a día
+• El problema principal disminuye notablemente
 • Sientes la diferencia desde el día 1
 
 🚀 Primer Mes:
-• [Resultado específico] completamente logrado
-• Tu [rutina/vida] se transforma por completo
+• Los resultados están completamente logrados
+• Tu rutina diaria se transforma por completo
 • Las personas notan el cambio en ti
 
 🏆 Resultados a Largo Plazo:
-• [Beneficio duradero] permanente
+• Beneficios permanentes y duraderos
 • Calidad de vida superior
 • Sin vuelta atrás a lo que eras antes
 

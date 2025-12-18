@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { X, Download, Edit2, Trash2, Maximize2, ShoppingBag, Search, TrendingUp, Award, Flame, Zap, Calendar as CalendarIcon, Users, Video as VideoIcon, DollarSign, Tag, Globe, FileText } from 'lucide-react';
 import type { Video } from '../lib/database.types';
 import { supabase } from '../lib/supabase';
+import { generateUniqueSalesAngles, generateUniqueFacebookAdCopies } from '../lib/salesAnglesGenerator';
 
 interface VideoDetailViewProps {
   video: Video;
@@ -122,124 +123,15 @@ export default function VideoDetailView({ video, onClose, onEdit, onDelete, dayN
       }));
     }
 
-    const productName = video.product_name || video.title || 'este producto';
-    const totalSales = formatNumber(video.total_sales);
-    const salesYesterday = video.sales_yesterday || 'cientos';
-
-    const angleStrategies = [
-      {
-        title: 'Problema-Solución',
-        description: `¿Estás frustrado porque ese problema diario te impide alcanzar tus objetivos? 😤
-
-${productName} fue diseñado específicamente para eliminar este problema de raíz. No es una solución temporal, es LA solución definitiva.
-
-✅ Resuelve el problema principal en minutos
-✅ Sin complicaciones, fácil de usar
-✅ Resultados garantizados desde el primer uso
-✅ Ya son ${totalSales} clientes que superaron este problema
-
-No dejes que este problema controle tu vida un día más. Toma acción ahora y descubre la diferencia. 💪`
-      },
-      {
-        title: 'Beneficio Emocional',
-        description: `Imagina despertar cada día sintiéndote feliz, seguro, orgulloso y confiado... 🌟
-
-${productName} no es solo un producto, es tu boleto hacia la vida que siempre soñaste.
-
-💎 TRANSFORMA TU DÍA A DÍA:
-• Siente la tranquilidad de tener todo bajo control
-• Disfruta la confianza que siempre quisiste
-• Experimenta la libertad de vivir sin preocupaciones
-• Conquista ese sentimiento de logro personal
-
-${totalSales} personas ya están viviendo esta transformación emocional. ¿Por qué tú no?
-
-Tu bienestar emocional no tiene precio. Invierte en ti hoy. ❤️`
-      },
-      {
-        title: 'Exclusividad/Escasez',
-        description: `🚨 ALERTA: STOCK CRÍTICO 🚨
-
-${productName} está VOLANDO de los estantes. Solo ayer se vendieron ${salesYesterday} unidades.
-
-⚡ POR QUÉ LA URGENCIA ES REAL:
-• Edición limitada: pocas unidades disponibles
-• Tendencia VIRAL en redes sociales
-• ${totalSales} unidades vendidas y contando
-• Reabastecimiento: 4-6 semanas
-
-Este no es un truco de marketing. La demanda es REAL y el inventario es LIMITADO.
-
-⏰ ÚLTIMA OPORTUNIDAD:
-Si estás leyendo esto, todavía hay stock... pero no por mucho tiempo.
-
-❌ No seas de los que luego dicen "debí comprarlo cuando pude"
-✅ Actúa AHORA y asegura el tuyo antes del agotamiento total
-
-Los que dudan, pierden. Simple. 🔥`
-      },
-      {
-        title: 'Comparación',
-        description: `🤔 ¿Seguir con tu situación actual o dar el salto a ${productName}?
-
-📊 COMPARACIÓN REAL:
-
-SIN ${productName}:
-❌ Sigues lidiando con las mismas frustraciones
-❌ Pierdes tiempo y dinero constantemente
-❌ Te frustras cada vez que intentas resolver el problema
-❌ Envidias a quienes ya tienen la solución
-
-CON ${productName}:
-✅ Obtienes resultados automáticamente
-✅ Ahorras tiempo, dinero y esfuerzo
-✅ Disfrutas resultados positivos todos los días
-✅ Te unes a ${totalSales} usuarios satisfechos
-
-💰 INVERSIÓN vs. GASTO:
-La competencia te cobra más por menos. ${productName} te da calidad premium a precio justo.
-
-¿Vas a seguir gastando en soluciones mediocres o invertirás en algo que realmente funciona?
-
-La elección es tuya. Pero ${salesYesterday} personas ayer eligieron sabiamente. 🎯`
-      },
-      {
-        title: 'Transformación (Antes/Después)',
-        description: `🔴 ANTES de ${productName}:
-"Cada día es una lucha constante. He probado todo y nada funciona. Me siento estancado y sin esperanza..." 😞
-
-🟢 DESPUÉS de ${productName}:
-"¡WOW! No puedo creer el cambio. Mi vida es completamente diferente. ¿Por qué no lo descubrí antes?" 🤩
-
-📈 TRANSFORMACIÓN COMPROBADA:
-
-✨ Primera Semana:
-• Notas mejora inmediata en tu día a día
-• El problema principal disminuye notablemente
-• Sientes la diferencia desde el día 1
-
-🚀 Primer Mes:
-• Los resultados están completamente logrados
-• Tu rutina diaria se transforma por completo
-• Las personas notan el cambio en ti
-
-🏆 Resultados a Largo Plazo:
-• Beneficios permanentes y duraderos
-• Calidad de vida superior
-• Sin vuelta atrás a lo que eras antes
-
-${totalSales} transformaciones reales. ${salesYesterday} personas más empezaron ayer su viaje.
-
-¿Cuándo empieza el tuyo? Tu "después" te está esperando. ⭐`
-      }
-    ];
-
-    const shuffled = [...angleStrategies].sort(() => Math.random() - 0.5);
-
-    return shuffled.map((angle, index) => ({
-      title: `${index + 1}. ${angle.title}`,
-      description: angle.description
-    }));
+    return generateUniqueSalesAngles({
+      id: video.id,
+      product_name: video.product_name,
+      title: video.title,
+      category: video.category,
+      total_sales: video.total_sales,
+      sales_yesterday: video.sales_yesterday,
+      country_origin: video.country
+    });
   };
 
   const getFacebookAdCopies = () => {
@@ -257,143 +149,15 @@ ${totalSales} transformaciones reales. ${salesYesterday} personas más empezaron
       }));
     }
 
-    const productName = video.product_name || video.title || 'este producto';
-    const totalSales = formatNumber(video.total_sales);
-    const salesYesterday = video.sales_yesterday || 'cientos';
-
-    return [
-      {
-        title: 'Problema/Solución (Pain Point)',
-        description: `¿Te has sentido frustrado porque ese problema constante sigue afectando tu día a día? 😔
-
-Sabemos exactamente lo que estás pasando. Miles de personas han enfrentado este mismo problema durante años, probando soluciones que simplemente NO funcionan.
-
-Pero aquí está la buena noticia... 🎯
-
-${productName} fue diseñado específicamente para resolver este problema de raíz. No es otra solución temporal, es LA solución definitiva que has estado buscando.
-
-✅ Resuelve el problema de forma permanente
-✅ Fácil de usar, sin complicaciones
-✅ Resultados visibles desde el primer uso
-✅ Garantía de satisfacción 100%
-
-Ya son ${totalSales} clientes satisfechos que superaron este mismo problema. Ahora es tu turno.
-
-👉 Haz clic en "Comprar Ahora" y transforma tu vida hoy mismo. ¡No dejes que este problema te detenga ni un día más!`
-      },
-      {
-        title: 'Transformación (Antes y Después)',
-        description: `🔴 ANTES: "Estoy harto de esta situación... He probado todo y nada funciona. Me siento frustrado y sin esperanza..."
-
-¿Te suena familiar? Así se sentían miles de personas antes de descubrir ${productName}.
-
-🟢 DESPUÉS: "¡No puedo creer la diferencia! ${productName} cambió completamente mi vida. Ojalá lo hubiera descubierto antes. Es increíble."
-
-Esta es la transformación REAL que están experimentando ${totalSales} personas en todo el mundo. No es magia, es simplemente el poder de una solución que REALMENTE funciona.
-
-📈 RESULTADOS COMPROBADOS:
-• Mejora notable en tiempo récord
-• Resultados duraderos garantizados
-• Cambios visibles desde el primer día
-• Satisfacción del 98% de nuestros clientes
-
-La pregunta no es SI funciona... la pregunta es: ¿Cuándo vas a empezar TÚ tu transformación?
-
-💥 Únete a los miles que ya transformaron su vida. Haz clic ahora y empieza tu "después" hoy mismo.`
-      },
-      {
-        title: 'Escasez/Urgencia (FOMO)',
-        description: `⚠️ ALERTA DE INVENTARIO CRÍTICO ⚠️
-
-¡Esto es SERIO! Solo quedan POCAS UNIDADES de ${productName} disponibles con el descuento especial de hoy.
-
-📊 DATOS EN TIEMPO REAL:
-• ${salesYesterday} unidades vendidas SOLO AYER
-• Stock actual: LIMITADO
-• Demanda: ALTÍSIMA
-• Tiempo restante de oferta: POCAS HORAS
-
-🔥 ¿Por qué tanta demanda?
-
-Porque ${totalSales} clientes ya descubrieron que ${productName} es la solución definitiva que estaban buscando. Y ahora, TODO EL MUNDO lo quiere.
-
-⏰ LA REALIDAD:
-Si estás leyendo esto AHORA, todavía tienes oportunidad. Pero en unas horas, es muy probable que este stock se agote COMPLETAMENTE.
-
-Y cuando eso pase, tendrás que esperar semanas para el próximo lote... Y probablemente a un precio MUCHO más alto.
-
-❌ No cometas el error de "pensarlo" demasiado
-❌ No seas de los que luego dicen "debí comprarlo cuando pude"
-✅ Actúa AHORA mientras todavía hay disponibilidad
-
-👉 Haz clic en "Comprar Ahora" y asegura tu unidad antes de que sea demasiado tarde. ¡No te quedes afuera!`
-      },
-      {
-        title: 'Propuesta de Valor Única',
-        description: `¿Qué hace a ${productName} COMPLETAMENTE DIFERENTE de todo lo demás que existe en el mercado? 🤔
-
-Déjame ser directo contigo...
-
-La mayoría de productos similares solo te dan soluciones temporales, materiales de baja calidad, y resultados mediocres. Son baratos por una razón: NO FUNCIONAN.
-
-🎯 ${productName} ES DIFERENTE:
-
-✨ DISEÑO Y FUNCIONALIDAD SUPERIOR:
-Mientras otros productos ofrecen lo básico, nosotros entregamos una experiencia premium completa, lo que significa resultados 10X mejores para ti.
-
-💎 CALIDAD PREMIUM GARANTIZADA:
-No usamos materiales baratos ni procesos de baja calidad. Cada detalle está cuidadosamente diseñado para darte la mejor experiencia posible.
-
-🔬 RESULTADOS CIENTÍFICAMENTE COMPROBADOS:
-No es solo marketing. Tenemos estudios reales y ${totalSales} testimonios de clientes satisfechos que respaldan cada palabra que decimos.
-
-🛡️ GARANTÍA SIN RIESGOS:
-Tan seguros estamos de que te va a encantar, que ofrecemos garantía total de satisfacción. Si no funciona, te devolvemos el 100% de tu dinero. Sin preguntas.
-
-🏆 RECONOCIMIENTO Y VALIDACIÓN:
-Miles de clientes satisfechos respaldan la calidad y efectividad del producto.
-
-La diferencia entre "otro producto más" y ${productName} es la diferencia entre seguir frustrado o finalmente lograr lo que quieres.
-
-👉 No te conformes con menos. Elige calidad, elige resultados, elige ${productName}. Haz clic ahora.`
-      },
-      {
-        title: 'Desafío/Pregunta Impactante',
-        description: `¿Y si te dijera que podrías lograr resultados extraordinarios en tiempo récord? 💭
-
-Sé lo que estás pensando: "Suena demasiado bueno para ser verdad..."
-
-Y tendrías razón... SI estuviéramos hablando de cualquier otro producto.
-
-Pero no estamos hablando de cualquier cosa. Estamos hablando de ${productName}.
-
-🎯 AQUÍ ESTÁ EL DESAFÍO:
-
-${totalSales} personas dijeron "sí" a este desafío. Y TODAS ellas lograron resultados que nunca pensaron posibles.
-
-¿La pregunta real? ¿Eres de las personas que toma acción, o de las que solo observa cómo otros logran sus sueños?
-
-💡 PIÉNSALO ASÍ:
-• ¿Cuánto tiempo más vas a esperar para alcanzar tus objetivos?
-• ¿Cuántas oportunidades más vas a dejar pasar?
-• ¿Realmente puedes darte el lujo de seguir sin esta solución?
-
-⚡ LA VERDAD INCÓMODA:
-Dentro de 6 meses estarás en uno de dos lugares:
-
-1️⃣ Celebrando que tomaste la decisión de probar ${productName} hoy
-2️⃣ Arrepintiéndote de no haberlo hecho cuando tuviste la oportunidad
-
-🏆 ${salesYesterday} personas aceptaron este desafío AYER.
-🏆 ${totalSales} ya están viviendo los resultados.
-🏆 Ahora es TU turno.
-
-La pregunta no es "¿funcionará?" - ya sabemos que sí.
-La pregunta es: "¿Estás listo para aceptar el desafío?"
-
-👉 Haz clic ahora, acepta el desafío, y demuéstrate a ti mismo de lo que eres capaz. ¡Tu futuro yo te lo agradecerá!`
-      }
-    ];
+    return generateUniqueFacebookAdCopies({
+      id: video.id,
+      product_name: video.product_name,
+      title: video.title,
+      category: video.category,
+      total_sales: video.total_sales,
+      sales_yesterday: video.sales_yesterday,
+      country_origin: video.country
+    });
   };
 
   return (

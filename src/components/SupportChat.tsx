@@ -143,17 +143,6 @@ Formato de respuesta:
         text: `${msg.role === 'user' ? 'Usuario' : 'Asistente'}: ${msg.content}`
       }));
 
-      conversationHistory.push({
-        text: `Usuario: ${userMsg}`
-      });
-
-      const contents = [{
-        parts: [
-          { text: systemPrompt },
-          ...conversationHistory
-        ]
-      }];
-
       const response = await fetch(
         'https://sxetinqdzjlstdlanjma.supabase.co/functions/v1/gemini-chat',
         {
@@ -161,7 +150,11 @@ Formato de respuesta:
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ message }),
+          body: JSON.stringify({
+            systemPrompt,
+            conversationHistory,
+            message: userMsg
+          }),
         }
       );
 

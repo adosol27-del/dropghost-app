@@ -762,14 +762,14 @@ La pregunta es: "¿Estás listo para aceptar el desafío?"
               </button>
             </div>
 
-            <div className="p-6 space-y-4">
+            <div className="p-6 space-y-4 overflow-y-auto">
               {getSalesAngles().map((angle, index) => (
                 <div
                   key={index}
                   className="bg-slate-800/50 rounded-lg p-5 border border-slate-700 hover:border-emerald-500/50 transition"
                 >
-                  <h3 className="text-lg font-semibold text-emerald-400 mb-3">{angle.title}</h3>
-                  <p className="text-slate-300 leading-relaxed whitespace-pre-wrap">{angle.description}</p>
+                  <h3 className="text-lg font-semibold text-emerald-400 mb-3 break-words">{angle.title}</h3>
+                  <p className="text-slate-300 leading-relaxed whitespace-pre-wrap break-words overflow-wrap-anywhere max-w-full">{angle.description}</p>
                   <button
                     onClick={() => {
                       navigator.clipboard.writeText(angle.description);
@@ -818,7 +818,7 @@ La pregunta es: "¿Estás listo para aceptar el desafío?"
               </button>
             </div>
 
-            <div className="p-6 space-y-4">
+            <div className="p-6 space-y-4 overflow-y-auto">
               {getFacebookAdCopies().map((copy, index) => (
                 <div
                   key={index}
@@ -829,10 +829,10 @@ La pregunta es: "¿Estás listo para aceptar el desafío?"
                       {index + 1}
                     </span>
                     <div className="flex-1">
-                      <h3 className="text-lg font-semibold text-emerald-400">{copy.title}</h3>
+                      <h3 className="text-lg font-semibold text-emerald-400 break-words">{copy.title}</h3>
                     </div>
                   </div>
-                  <p className="text-slate-300 leading-relaxed whitespace-pre-wrap">{copy.description}</p>
+                  <p className="text-slate-300 leading-relaxed whitespace-pre-wrap break-words overflow-wrap-anywhere max-w-full">{copy.description}</p>
                   <div className="flex gap-2 mt-4">
                     <button
                       onClick={() => {

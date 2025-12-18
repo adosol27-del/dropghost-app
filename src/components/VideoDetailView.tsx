@@ -123,28 +123,123 @@ export default function VideoDetailView({ video, onClose, onEdit, onDelete, dayN
     }
 
     const productName = video.product_name || video.title || 'este producto';
-    return [
+    const totalSales = formatNumber(video.total_sales);
+    const salesYesterday = video.sales_yesterday || 'cientos';
+
+    const angleStrategies = [
       {
-        title: '1. Problema-Solución',
-        description: `¿Cansado de [problema común]? ${productName} es la solución perfecta que necesitas. Miles de clientes satisfechos ya están disfrutando de sus beneficios.`
+        title: 'Problema-Solución',
+        description: `¿Estás frustrado porque [problema específico] te impide [objetivo deseado]? 😤
+
+${productName} fue diseñado específicamente para eliminar este problema de raíz. No es una solución temporal, es LA solución definitiva.
+
+✅ Resuelve [problema principal] en minutos
+✅ Sin complicaciones, fácil de usar
+✅ Resultados garantizados desde el primer uso
+✅ Ya son ${totalSales} clientes que superaron este problema
+
+No dejes que [problema] controle tu vida un día más. Toma acción ahora y descubre la diferencia. 💪`
       },
       {
-        title: '2. Prueba Social',
-        description: `Más de ${formatNumber(video.total_sales)} personas ya confían en ${productName}. Únete a la comunidad de usuarios satisfechos y descubre por qué es tendencia.`
+        title: 'Beneficio Emocional',
+        description: `Imagina despertar cada día sintiéndote [emoción positiva: feliz, seguro, orgulloso, confiado]... 🌟
+
+${productName} no es solo un producto, es tu boleto hacia [estado emocional deseado].
+
+💎 TRANSFORMA TU DÍA A DÍA:
+• Siente la tranquilidad de tener [beneficio emocional]
+• Disfruta la confianza que siempre quisiste
+• Experimenta la libertad de vivir sin [preocupación común]
+• Conquista ese sentimiento de logro personal
+
+${totalSales} personas ya están viviendo esta transformación emocional. ¿Por qué tú no?
+
+Tu bienestar emocional no tiene precio. Invierte en ti hoy. ❤️`
       },
       {
-        title: '3. Urgencia y Escasez',
-        description: `¡Oferta limitada! ${productName} tiene alta demanda con ${video.sales_yesterday || 'cientos de'} ventas solo ayer. No te quedes sin el tuyo.`
+        title: 'Exclusividad/Escasez',
+        description: `🚨 ALERTA: STOCK CRÍTICO 🚨
+
+${productName} está VOLANDO de los estantes. Solo ayer se vendieron ${salesYesterday} unidades.
+
+⚡ POR QUÉ LA URGENCIA ES REAL:
+• Edición limitada: pocas unidades disponibles
+• Tendencia VIRAL en redes sociales
+• ${totalSales} unidades vendidas y contando
+• Reabastecimiento: 4-6 semanas
+
+Este no es un truco de marketing. La demanda es REAL y el inventario es LIMITADO.
+
+⏰ ÚLTIMA OPORTUNIDAD:
+Si estás leyendo esto, todavía hay stock... pero no por mucho tiempo.
+
+❌ No seas de los que luego dicen "debí comprarlo cuando pude"
+✅ Actúa AHORA y asegura el tuyo antes del agotamiento total
+
+Los que dudan, pierden. Simple. 🔥`
       },
       {
-        title: '4. Transformación',
-        description: `Imagina cómo cambiaría tu vida con ${productName}. Desde el primer día notarás la diferencia. Tu yo del futuro te lo agradecerá.`
+        title: 'Comparación',
+        description: `🤔 ¿Seguir con tu situación actual o dar el salto a ${productName}?
+
+📊 COMPARACIÓN REAL:
+
+SIN ${productName}:
+❌ Sigues lidiando con [problema diario]
+❌ Pierdes [tiempo/dinero] constantemente
+❌ Te frustras cada vez que [situación negativa]
+❌ Envidias a quienes ya tienen la solución
+
+CON ${productName}:
+✅ [Beneficio específico] automáticamente
+✅ Ahorras [recurso: tiempo/dinero/esfuerzo]
+✅ Disfrutas [resultado positivo] todos los días
+✅ Te unes a ${totalSales} usuarios satisfechos
+
+💰 INVERSIÓN vs. GASTO:
+La competencia te cobra más por menos. ${productName} te da calidad premium a precio justo.
+
+¿Vas a seguir gastando en soluciones mediocres o invertirás en algo que realmente funciona?
+
+La elección es tuya. Pero ${salesYesterday} personas ayer eligieron sabiamente. 🎯`
       },
       {
-        title: '5. Comparación de Valor',
-        description: `Por menos de lo que gastas en [comparación común], obtienes ${productName}. Una inversión inteligente que vale cada centavo.`
+        title: 'Transformación (Antes/Después)',
+        description: `🔴 ANTES de ${productName}:
+"Cada día es una lucha con [problema]. He probado todo y nada funciona. Me siento estancado y sin esperanza..." 😞
+
+🟢 DESPUÉS de ${productName}:
+"¡WOW! No puedo creer el cambio. Mi vida es completamente diferente. ¿Por qué no lo descubrí antes?" 🤩
+
+📈 TRANSFORMACIÓN COMPROBADA:
+
+✨ Primera Semana:
+• Notas mejora inmediata en [aspecto 1]
+• [Problema principal] disminuye notablemente
+• Sientes la diferencia desde el día 1
+
+🚀 Primer Mes:
+• [Resultado específico] completamente logrado
+• Tu [rutina/vida] se transforma por completo
+• Las personas notan el cambio en ti
+
+🏆 Resultados a Largo Plazo:
+• [Beneficio duradero] permanente
+• Calidad de vida superior
+• Sin vuelta atrás a lo que eras antes
+
+${totalSales} transformaciones reales. ${salesYesterday} personas más empezaron ayer su viaje.
+
+¿Cuándo empieza el tuyo? Tu "después" te está esperando. ⭐`
       }
     ];
+
+    const shuffled = [...angleStrategies].sort(() => Math.random() - 0.5);
+
+    return shuffled.map((angle, index) => ({
+      title: `${index + 1}. ${angle.title}`,
+      description: angle.description
+    }));
   };
 
   const getFacebookAdCopies = () => {
@@ -359,7 +454,7 @@ La pregunta es: "¿Estás listo para aceptar el desafío?"
                 </div>
 
                 <button
-                  onClick={() => setShowAdCopies(true)}
+                  onClick={() => setShowAngles(true)}
                   className="w-full py-3 bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-medium rounded-lg hover:from-emerald-600 hover:to-teal-700 transition mb-4 flex items-center justify-center gap-2"
                 >
                   <FileText className="w-5 h-5" />
@@ -650,13 +745,13 @@ La pregunta es: "¿Estás listo para aceptar el desafío?"
             <div className="sticky top-0 bg-slate-900 border-b border-slate-700 p-6 flex items-center justify-between">
               <div>
                 <div className="flex items-center gap-3">
-                  <TrendingUp className="w-6 h-6 text-purple-400" />
+                  <TrendingUp className="w-6 h-6 text-emerald-400" />
                   <h2 className="text-2xl font-bold text-white">5 Ángulos de Venta</h2>
                 </div>
                 <p className="text-sm text-slate-400 mt-1">
                   {Array.isArray(video.sales_angles) && video.sales_angles.length > 0
                     ? 'Ángulos personalizados del producto'
-                    : 'Ángulos generados automáticamente - Edita el video para personalizarlos'}
+                    : '5 estrategias de marketing diferentes generadas para este producto'}
                 </p>
               </div>
               <button
@@ -671,18 +766,18 @@ La pregunta es: "¿Estás listo para aceptar el desafío?"
               {getSalesAngles().map((angle, index) => (
                 <div
                   key={index}
-                  className="bg-slate-800/50 rounded-lg p-5 border border-slate-700 hover:border-purple-500/50 transition"
+                  className="bg-slate-800/50 rounded-lg p-5 border border-slate-700 hover:border-emerald-500/50 transition"
                 >
-                  <h3 className="text-lg font-semibold text-purple-400 mb-3">{angle.title}</h3>
-                  <p className="text-slate-300 leading-relaxed">{angle.description}</p>
+                  <h3 className="text-lg font-semibold text-emerald-400 mb-3">{angle.title}</h3>
+                  <p className="text-slate-300 leading-relaxed whitespace-pre-wrap">{angle.description}</p>
                   <button
                     onClick={() => {
                       navigator.clipboard.writeText(angle.description);
-                      alert('Copiado al portapapeles');
+                      alert('Ángulo copiado al portapapeles');
                     }}
-                    className="mt-3 px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white text-sm rounded-lg transition"
+                    className="mt-3 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium rounded-lg transition"
                   >
-                    Copiar
+                    Copiar Ángulo
                   </button>
                 </div>
               ))}
@@ -691,7 +786,7 @@ La pregunta es: "¿Estás listo para aceptar el desafío?"
             <div className="sticky bottom-0 bg-slate-900 border-t border-slate-700 p-6">
               <button
                 onClick={() => setShowAngles(false)}
-                className="w-full py-3 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-lg transition"
+                className="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-lg transition"
               >
                 Cerrar
               </button>
